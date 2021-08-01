@@ -1,4 +1,38 @@
-# Getting Started with Create React App
+# City Explorer
+
+**Author**: Your Name Goes Here
+**Version**: 1.0.0 (increment the patch/fix version number if you make more commits past your first submission)
+
+## Overview
+
+I am building a React application that uses the Axios library to make user-initiated reqeusts for data from a thrid-party API.
+
+## Getting Started
+
+1. Create a Repo from Github
+1. Clone the Repo to my machine
+1. Create React Application
+1. Write my code on the VScode
+1. Install Axios
+1. Deploy it on Netlify
+
+## Architecture
+
+I will be using LocationIQ, React application, Trello for traking my requirements and Netlify for deploying it.
+
+## Change Log
+
+<!-- Use this area to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an example:
+
+01-01-2001 4:59pm - Application now has a fully-functional express server, with a GET route for the location resource. -->
+
+## Credit and Collaborations
+
+Raghad Abdelghani
+
+---
+
+<!-- # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -67,4 +101,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 ### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify) -->
