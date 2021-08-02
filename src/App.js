@@ -12,6 +12,7 @@ export class App extends React.Component {
     super(props);
     this.state = {
       dataLocation: {},
+      displayData: false,
     };
   }
 
@@ -24,8 +25,8 @@ export class App extends React.Component {
 
     this.setState({
       dataLocation: result.data[0],
+      displayData: true,
     });
-
   };
   render() {
     return (
@@ -44,35 +45,43 @@ export class App extends React.Component {
 
         <div>
           <h4>Location Information:- </h4>
-          <ListGroup variant="flush">
-            <ListGroup.Item>
-              {" "}
-              {this.state.dataLocation.display_name && (
-                <p>City: {this.state.dataLocation.display_name}</p>
-              )}
-            </ListGroup.Item>
-            <ListGroup.Item>
-              {" "}
-              {this.state.dataLocation.lat && (
-                <p>Latitude {this.state.dataLocation.lat}</p>
-              )}
-            </ListGroup.Item>
-            <ListGroup.Item>
-              {" "}
-              {this.state.dataLocation.lon && (
-                <p>Longitude {this.state.dataLocation.lon}</p>
-              )}
-            </ListGroup.Item>
-          </ListGroup>
+          {this.state.displayData && (
+            <div>
+              <ListGroup variant="flush">
+                <ListGroup.Item>
+                  {" "}
+                  {this.state.dataLocation.display_name && (
+                    <p>City: {this.state.dataLocation.display_name}</p>
+                  )}
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  {" "}
+                  {this.state.dataLocation.lat && (
+                    <p>Latitude {this.state.dataLocation.lat}</p>
+                  )}
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  {" "}
+                  {this.state.dataLocation.lon && (
+                    <p>Longitude {this.state.dataLocation.lon}</p>
+                  )}
+                </ListGroup.Item>
+              </ListGroup>
+              <Container>
+                <Row>
+                  <Col xs={6} md={4}>
+                    <Image
+                      src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION_TQ_TOKEN}&center=${this.state.dataLocation.lat},${this.state.dataLocation.lon}&zoom=1-18`}
+                      alt="map"
+                      roundedCircle
+                    />
+                  </Col>
+                </Row>
+              </Container>
+            </div>
+          )}
+
         </div>
-        <Container>
-          <Row>
-            <Col xs={6} md={4}>
-              <Image src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION_TQ_TOKEN}&center=${this.state.dataLocation.lat},${this.state.dataLocation.lon}&zoom=1-18`}
-          alt="map" roundedCircle  />
-            </Col>
-          </Row>
-        </Container>
 
       </div>
     );
