@@ -26,9 +26,6 @@ export class App extends React.Component {
       dataLocation: result.data[0],
     });
 
-    this.setState({
-      dataLocation: result.data[0],
-    });
   };
   render() {
     return (
