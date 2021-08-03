@@ -13,6 +13,8 @@ export class App extends React.Component {
     this.state = {
       dataLocation: {},
       displayData: false,
+      errorMsg: false,
+      message:"Insert a city first"
     };
   }
 
@@ -22,11 +24,17 @@ export class App extends React.Component {
     const result = await axios.get(
       `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION_TQ_TOKEN}&q=${location}&format=json`
     );
+    try{
 
     this.setState({
       dataLocation: result.data[0],
       displayData: true,
     });
+  }catch{
+    this.setState({
+      errorMsg : true
+    });
+  }
   };
   render() {
     return (
@@ -78,11 +86,10 @@ export class App extends React.Component {
                   </Col>
                 </Row>
               </Container>
+              {this.state.errorMsg && this.state.message}
             </div>
           )}
-
         </div>
-
       </div>
     );
   }
