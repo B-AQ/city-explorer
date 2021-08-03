@@ -6,7 +6,9 @@ import Image from "react-bootstrap/Image";
 import { Container } from "react-bootstrap";
 import { Col } from "react-bootstrap";
 import { Row } from "react-bootstrap";
-
+import Weather from "./component/Weather";
+// import { cargo } from "async";
+// "proxy":"http://localhost:3030/",
 export class App extends React.Component {
   constructor(props) {
     super(props);
@@ -14,7 +16,12 @@ export class App extends React.Component {
       dataLocation: {},
       displayData: false,
       errorMsg: false,
-      message:"Insert a city first"
+      message:"Insert a city first",
+      weather: [],
+      latitude: '',
+      longitude: '',
+      searchQuery: '',
+
     };
   }
 
@@ -36,6 +43,20 @@ export class App extends React.Component {
     });
   }
   };
+  getWeatherCondition = async(lat, lon) =>{
+    try{
+    let weather = await axios.get(`${process.env.REACT_APP_SERVER_URL}/weather`,{params:{latitude:lat,longitude:lon,searchQuery:this.state.searchQuery}})
+    this.setState({
+    weather: weather.data
+   });
+   }catch(e){
+     this.setState({
+      displayData: false,
+      errorMsg : true
+     })
+   }
+
+  }
   render() {
     return (
       <div>
@@ -82,6 +103,17 @@ export class App extends React.Component {
                       src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION_TQ_TOKEN}&center=${this.state.dataLocation.lat},${this.state.dataLocation.lon}&zoom=1-18`}
                       alt="map"
                       roundedCircle
+                    />
+                  </Col>
+                </Row>
+                
+              </Container>
+              <Container>
+                <Row>
+                  <Col xs={6} md={4}>
+                    <Weather
+                    weather={this.state.weather}
+
                     />
                   </Col>
                 </Row>
