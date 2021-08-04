@@ -1,13 +1,28 @@
-import React, { Component } from 'react'
+  
+import React from 'react';
+// import axios from 'axios';
 
-export class Weather extends Component {
+
+class weather extends React.Component {
+
+
+  
     render() {
-        return (
-            <div>
-                
-            </div>
-        )
-    }
-}
+console.log(this.props.weather);
+        return(
+            this.props.weather.map((item)=>(
 
-export default Weather
+                <>
+                <p>Date : {item.dateTime}</p>
+                
+                <p>Description : {item.description}</p>
+                </>
+            )
+            )
+        )
+        }
+
+
+    }
+
+export default weather;
