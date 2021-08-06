@@ -7,61 +7,66 @@ import { Container } from "react-bootstrap";
 import { Col } from "react-bootstrap";
 import { Row } from "react-bootstrap";
 import Weather from "./component/Weather";
-// import { cargo } from "async";
-// "proxy":"http://localhost:3030/",
+
 export class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       dataLocation: {},
-      displayData: false,
+      displayDataMap: false,
       errorMsg: false,
-      message:"Insert a city first",
+      message: "",
       weather: [],
-      latitude: '',
-      longitude: '',
-      searchQuery: '',
-
+      latitude: "",
+      longitude: "",
+      searchQuery: "",
     };
   }
 
-  formSubmition = async (event) => {
+
+  formLocationSubmition = async (event) => {
     event.preventDefault();
     const location = event.target.location.value;
     const result = await axios.get(
       `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION_TQ_TOKEN}&q=${location}&format=json`
     );
-    
-    try{
 
-    this.setState({
-      dataLocation: result.data[0],
-      displayData: true,
-    });
-  }catch{
-    this.setState({
-      errorMsg : true
-    });
-  }
+    try {
+      this.setState({
+        dataLocation: result.data[0],
+        displayDataMap: true,
+      });
+      await this.getWeatherCondition(location);
+    } catch {
+      this.setState({
+        errorMsg: true,
+      });
+    }
   };
-  getWeatherCondition = async(lat, lon) =>{
-    try{
-    let weather = await axios.get(`${process.env.REACT_APP_SERVER_URL}/weather`,{params:{latitude:lat,longitude:lon,searchQuery:this.state.searchQuery}})
-    this.setState({
-    weather: weather.data
-   });
-   }catch(e){
-     this.setState({
-      displayData: false,
-      errorMsg : true
-     })
-   }
 
-  }
+
+  getWeatherCondition = async (searchQuery) => {
+    try {
+      let weather = await axios.get(
+        `${process.env.REACT_APP_SERVER_URL}/weather`,
+        { params: { searchQuery: searchQuery } }
+      );
+      this.setState({
+        weather: weather.data,
+      });
+    } catch (e) {
+      this.setState({
+        displayDataMap: false,
+        errorMsg: true,
+        message: "Insert a city first",
+      });
+    }
+  };
+
   render() {
     return (
       <div>
-        <form onSubmit={this.formSubmition}>
+        <form onSubmit={this.formLocationSubmition}>
           <label>Add Location</label>
           <br />
           <input
@@ -75,7 +80,7 @@ export class App extends React.Component {
 
         <div>
           <h4>Location Information:- </h4>
-          {this.state.displayData && (
+          {this.state.displayDataMap && (
             <div>
               <ListGroup variant="flush">
                 <ListGroup.Item>
@@ -107,15 +112,11 @@ export class App extends React.Component {
                     />
                   </Col>
                 </Row>
-                
               </Container>
               <Container>
                 <Row>
                   <Col xs={6} md={4}>
-                    <Weather
-                    weather={this.state.weather}
-
-                    />
+                    <Weather weather={this.state.weather} />
                   </Col>
                 </Row>
               </Container>

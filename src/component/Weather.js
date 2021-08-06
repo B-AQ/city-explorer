@@ -10,13 +10,13 @@ class weather extends React.Component {
     render() {
 console.log(this.props.weather);
         return(
-            this.props.weather.map((item)=>(
-
-                <>
-                <p>Date : {item.dateTime}</p>
+            this.props.weather.map((day,index)=>(
+            
+                <div key={index}>
+                <p>Date : {day.dateTime}</p>
                 
-                <p>Description : {item.description}</p>
-                </>
+                <p>Description : {day.description}</p>
+                </div>
             )
             )
         )
