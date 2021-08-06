@@ -6,6 +6,8 @@ import Image from "react-bootstrap/Image";
 import { Container } from "react-bootstrap";
 import { Col } from "react-bootstrap";
 import { Row } from "react-bootstrap";
+import Card from "react-bootstrap/Card";
+import ListGroupItem from "react-bootstrap/Card";
 import Weather from "./component/Weather";
 
 export class App extends React.Component {
@@ -21,6 +23,7 @@ export class App extends React.Component {
       longitude: "",
       searchQuery: "",
       forecastData: [],
+      movieData: [],
     };
   }
 
@@ -34,12 +37,17 @@ export class App extends React.Component {
     const forecast = await axios.get(
       `${process.env.REACT_APP_SERVER_URL}/weather-bit?latitude=${locationIq.lat}&longitude=${locationIq.lon}`
     );
-
+    const movieDb = result.data[0].display_name
+    const movie = await axios.get(
+      `${process.env.REACT_APP_SERVER_URL}/movie?query=${movieDb}`
+    );
     try {
       this.setState({
         dataLocation: result.data[0],
         displayDataMap: true,
         forecastData: forecast.data,
+        movieDataresults: movieDb,
+        movieData: movie.data,
       });
       await this.getWeatherCondition(location);
     } catch {
@@ -139,6 +147,35 @@ export class App extends React.Component {
                 </Container>
               );
             })}
+          {this.state.movieData &&
+            this.state.movieData.map(element => {
+              return (
+                <Card style={{ width: "18rem" }}>
+                  <Card.Img
+                    variant="top"
+                    src={element.image_url} alt="movie"
+                  />
+                  <Card.Body>
+                    <Card.Title>Title:{element.title}</Card.Title>
+                    <Card.Text>
+                    {element.overview}
+                    </Card.Text>
+                  </Card.Body>
+                  <ListGroup className="list-group-flush">
+                    <ListGroupItem>Average Votes:{element.average_votes}</ListGroupItem>
+                    <ListGroupItem>Total Votes:{element.total_votes}</ListGroupItem>
+                    <ListGroupItem>Popularity:{element.popularity}</ListGroupItem>
+                    <ListGroupItem>Released:{element.released_on}</ListGroupItem>
+                  </ListGroup>
+                </Card>
+                 )
+ 
+ 
+                })
+              
+       
+       
+             }
         </div>
       </div>
     );
