@@ -8,7 +8,7 @@ class weather extends React.Component {
 
   
     render() {
-console.log(this.props.weather);
+
         return(
             this.props.weather.map((day,index)=>(
             
