@@ -20,9 +20,9 @@ export class App extends React.Component {
       latitude: "",
       longitude: "",
       searchQuery: "",
+      forecastData: [],
     };
   }
-
 
   formLocationSubmition = async (event) => {
     event.preventDefault();
@@ -30,11 +30,16 @@ export class App extends React.Component {
     const result = await axios.get(
       `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION_TQ_TOKEN}&q=${location}&format=json`
     );
+    const locationIq = result.data[0];
+    const forecast = await axios.get(
+      `${process.env.REACT_APP_SERVER_URL}/weather-bit?latitude=${locationIq.lat}&longitude=${locationIq.lon}`
+    );
 
     try {
       this.setState({
         dataLocation: result.data[0],
         displayDataMap: true,
+        forecastData: forecast.data,
       });
       await this.getWeatherCondition(location);
     } catch {
@@ -43,7 +48,6 @@ export class App extends React.Component {
       });
     }
   };
-
 
   getWeatherCondition = async (searchQuery) => {
     try {
@@ -123,6 +127,18 @@ export class App extends React.Component {
               {this.state.errorMsg && this.state.message}
             </div>
           )}
+          {this.state.forecastData &&
+            this.state.forecastData.map((weather) => {
+              return (
+                <Container>
+                  <Row>
+                    <Col xs>Weather Bit Forecast</Col>
+                    <Col xs={{ order: 12 }}>{weather.date}</Col>
+                    <Col xs={{ order: 1 }}>{weather.description}</Col>
+                  </Row>
+                </Container>
+              );
+            })}
         </div>
       </div>
     );
